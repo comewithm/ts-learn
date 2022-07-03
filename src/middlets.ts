@@ -281,10 +281,18 @@ type flatten = Flatten<[1, 2, [3, 4], [[[5]]]]> // [1, 2, 3, 4, 5]
 type flatAny = Flatten<[{name:'nick'}, undefined, 12, [1,2,3]]> // [{name: 'nick';}, unknown, 12, 1, 2, 3]
 
 // 527.Append to object
-type Test = { id: '1' }
-
 type AppendToObject<T extends object, K extends string, V> = {
     [U in keyof T | K]: U extends keyof T ? T[U] : V
 } 
 
+type Test = { id: '1' }
+
 type AppRes = AppendToObject<Test, 'value', 4> // expected to be { id: '1', value: 4 }
+
+// 529.Absolute
+type Absolute<T extends number | string> = `${T}` extends `-${infer X}` ? `${X}` : `${T}`
+
+type AbTest = -100;
+
+type AbRes = Absolute<AbTest>; // expected to be "100"
+
